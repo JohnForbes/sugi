@@ -6,14 +6,16 @@ from webbrowser import open as open_url
 
 def f():
   service = get_service()
-  results = get_results({'service': service})
-  messages = get_messages({'results': results})
-  url = get_email_url(messages[-1]['id'])
+  result = service.users().threads().list(userId='me').execute()
+  threads = result.get('threads', [])  
+  url = get_email_url(threads[-1]['id'])
 
-  while 'nextPageToken' in results:
-    page_token = results['nextPageToken']
-    results = get_results({'service': service, 'page_token': page_token})
-    messages = get_messages({'results': results})
-    url = get_email_url(messages[-1]['id'])
+  while 'nextPageToken' in result:
+    page_token = result['nextPageToken']
+    _x = {'userId':'me', 'labelIds':['INBOX'], 'pageToken': page_token}
+    result = service.users().threads().list(**_x).execute()
+    threads = threads + result.get('threads', [])  
+
+  url = get_email_url(threads[-1]['id'])
   
   open_url(url)
