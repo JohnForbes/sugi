@@ -3,3 +3,5 @@ token.json
 credentials.json
 delay.txt
 dg.txt
+failed.pickle
+last_modified.pickle
