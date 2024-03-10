@@ -2,3 +2,4 @@ token.json
 *.pyc
 credentials.json
 delay.txt
+dg.txt
